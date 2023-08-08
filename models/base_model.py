@@ -21,7 +21,11 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key in ["created_at", "updated_at"]:
-                        setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                        setattr(
+                            self,
+                            key,
+                            datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                                )
                     else:
                         setattr(self, key, value)
         else:
@@ -31,14 +35,20 @@ class BaseModel:
 
     def __str__(self):
         """This method returns the string representation of the object"""
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+                self.__class__.__name__,
+                self.id,
+                self.__dict__
+                )
 
     def save(self):
         """This method updates the last updated_at atrribute"""
         self.updated_at = datetime.now()
 
     def to_dict(self):
-        """This method returns objects of the objects attributes after seriazation"""
+        """
+        This method returns objects of the objects attributes after seriazation
+        """
         obj_dict = self.__dict__.copy()
 
         obj_dict["__class__"] = self.__class__.__name__
