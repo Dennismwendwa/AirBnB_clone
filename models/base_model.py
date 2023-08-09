@@ -6,6 +6,7 @@ Its the blue print of all classes
 
 import uuid
 from datetime import datetime
+import models
 
 
 class BaseModel:
@@ -32,6 +33,8 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+        # Adding new instance to storage
+        models.storage.new(self)
 
     def __str__(self):
         """This method returns the string representation of the object"""
@@ -44,9 +47,7 @@ class BaseModel:
     def save(self):
         """This method updates the last updated_at atrribute"""
         self.updated_at = datetime.now()
-
-        storage.new(self)
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """
