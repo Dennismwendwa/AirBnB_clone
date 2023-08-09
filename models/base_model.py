@@ -45,6 +45,9 @@ class BaseModel:
         """This method updates the last updated_at atrribute"""
         self.updated_at = datetime.now()
 
+        storage.new(self)
+        storage.save()
+
     def to_dict(self):
         """
         This method returns objects of the objects attributes after seriazation
