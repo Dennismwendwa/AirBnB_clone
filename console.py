@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         Args:
             arg (str): Class name
         """
-
+        
         objects = models.storage.all()
         if not arg:
             print([str(objects[key]) for key in objects])
@@ -129,6 +129,27 @@ class HBNBCommand(cmd.Cmd):
             print(filtered_obj)
         else:
             print("** class doesn't exist **")
+        """
+        args = arg.split(".")
+
+        if args[0] not in models.classes:
+            print("** class doesn't exist **")
+            return
+
+        all_instances = models.storage.all()
+        class_name = args[0]
+        instance_list = []
+
+        for key, value in all_instances.items():
+            if key.split(".")[0] == class_name:
+                instance_str = "[{}] ({}) {}".format(class_name, value.id, value)
+                instance_str += str(value.__dict__)
+                instance_list.append(instance_str)
+
+        print(instance_list)
+        """
+
+
 
     def do_update(self, arg):
         """
@@ -164,20 +185,33 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 4:
             print("** value missing **")
             return
-
-        objects = models.storage.all()[key]
+        
         attribute_name = args[2]
         attribute_value = args[3]
 
+        if attribute_value.startswith('"') and attribute_value.endswith('"') or \
+                (attribute_value.startswith("'") and attribute_value.endswith("'")):
+                    attribute_value = attribute_value[1:-1]
         if len(args) > 4:
-            for arg in args[3:]:
-                attribute_value += " " + arg
+            try:
+                new_dict = eval(' '.join(args[3:]))
+                if not isinstance(new_dict, dict):
+                    raise ValueError
+            except:
+                print("** invalid dictionary format **")
+                return
+            new_dict = {k.strip("'"): v for k, v in new_dict.items()}
 
-        if attribute_value.startswith('"') and attribute_value.endswith('"'):
-            attribute_value = attribute_value[1:-1]
+            for k, v in new_dict.items():
+                if hasattr(objects[key], k):
+                    if isinstance(getattr(objects[key], k), int):
+                        new_dict[k] = int(v)
+                    setattr(objects[key], k, v)
+        else:
+            setattr(objects[key], attribute_name, attribute_value)
 
-        setattr(objects, attribute_name, attribute_value)
-        objects.save()
+        objects[key].save()
+
 
     def default(self, arg):
         """This meathod breaks down args for passing"""
