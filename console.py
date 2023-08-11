@@ -4,6 +4,14 @@
 import cmd
 import models
 
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class HBNBCommand(cmd.Cmd):
     """this is the command interpreter class"""
@@ -38,13 +46,14 @@ class HBNBCommand(cmd.Cmd):
         if not arg:
             print("** class name missing **")
             return
-
-        try:
-            nw_instance = models.classes[arg]()
-            nw_instance.save()
-            print(nw_instance.id)
-        except KeyError:
+        args = arg.split()
+        if args[0] not in models.classes:
             print("** class doesn't exist **")
+            return
+
+        nw_instance = eval(args[0])()
+        nw_instance.save()
+        print(nw_instance.id)
 
     def do_show(self, arg):
         """
@@ -105,8 +114,10 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints all string representation of all instances based or
         not on the class name.
-        Usage: all [<class name>]
+        Args:
+            arg (str): Class name
         """
+
         objects = models.storage.all()
         if not arg:
             print([str(objects[key]) for key in objects])
@@ -167,6 +178,50 @@ class HBNBCommand(cmd.Cmd):
 
         setattr(objects, attribute_name, attribute_value)
         objects.save()
+
+    def default(self, arg):
+        """This meathod breaks down args for passing"""
+
+        if "." not in arg:
+            return (cmd.Cmd.default(self, arg))
+
+        class_group = arg.split(".")
+        _class = class_group[0]
+
+        conversions = {40: 32, 41: None, 34: None, 44: None}
+        commds = (class_group[1].translate(conversions)).split(" ")
+        commd = commds[0]
+        commd = commd.strip()
+
+        if commd == "count":
+            counts = 0
+            for ky in models.storage.all().keys():
+                if _class == ky.split(".")[0]:
+                    counts += 1
+            print(counts)
+        elif commd == "show":
+            _id = commds[1]
+            self.do_show(_class + " " + _id)
+
+        elif commd == "destroy":
+            _id = commds[1]
+            self.do_destroy(_class + " " + _id)
+        elif commd == "all":
+            self.do_all(_class)
+        elif commd == "update":
+            if len(commds) < 2:
+                print("** instance id missing **")
+                return
+            elif len(commds) < 3:
+                print("** attribute name missing **")
+                return
+            elif len(commds) < 4:
+                print("** value missing **")
+                return
+            _id_no = commds[1]
+            keys = commds[2]
+            value = commds[3]
+            self.do_update(_class + " " + _id_no + " " + keys + " " + value)
 
 
 if __name__ == "__main__":
