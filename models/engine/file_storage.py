@@ -2,12 +2,12 @@
 """Defines the FileStorage class."""
 import json
 from models.base_model import BaseModel
-#from models.user import User
-#from models.state import State
-#from models.city import City
-#from models.place import Place
-#from models.amenity import Amenity
-#from models.review import Review
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
@@ -32,7 +32,11 @@ class FileStorage:
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         odict = FileStorage.__objects
-        objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
+        #  objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
+        objdict = {key: odict[key].to_dict() for key in odict}
+        for key in objdict:
+            objdict[key]["__class__"] = odict[key].__class__.__name__
+
         with open(FileStorage.__file_path, "w") as f:
             json.dump(objdict, f)
 
@@ -47,4 +51,3 @@ class FileStorage:
                     self.new(eval(cls_name)(**o))
         except FileNotFoundError:
             return
-
