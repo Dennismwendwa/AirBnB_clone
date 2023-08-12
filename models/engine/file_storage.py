@@ -32,7 +32,7 @@ class FileStorage:
     def save(self):
         """Serialize __objects to the JSON file __file_path."""
         odict = FileStorage.__objects
-        #  objdict = {obj: odict[obj].to_dict() for obj in odict.keys()}
+
         objdict = {key: odict[key].to_dict() for key in odict}
         for key in objdict:
             objdict[key]["__class__"] = odict[key].__class__.__name__
