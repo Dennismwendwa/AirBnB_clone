@@ -12,6 +12,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 import models
+from models.engine.file_storage import FileStorage
 
 import unittest
 import sys
@@ -630,6 +631,407 @@ class TestShowCommand(unittest.TestCase):
             cmd = "Review.show({})".format(lookup)
             self.assertFalse(HBNBCommand().onecmd(cmd))
             self.assertEqual(objec.__str__(), f.getvalue().strip())
+
+
+
+class TestDestroyCommand(unittest.TestCase):
+    """This class tests destroy method"""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.console = HBNBCommand()
+
+    def setUp(self):
+        self.mock_stdout = StringIO()
+        self.temp_file = tempfile.NamedTemporaryFile(delete=False)
+
+    def tearDown(self):
+        self.mock_stdout.close()
+        self.temp_file.close()
+
+    def test_destroy_with_missing_class_name(self):
+        message = "** class name missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalid_class_name(self):
+        message = "** class doesn't exist **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy InvalidClass")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+
+    def test_destroy_missingId_dot_lookup_basemodel(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("BaseModel.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_user(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("User.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_state(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("State.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_city(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("City.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_amenity(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Amenity.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_place(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Place.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_dot_lookup_review(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Review.destroy()")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_basemodel(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy BaseModel")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_user(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy User")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_state(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy State")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_city(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy City")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_amenity(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Amenity")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_place(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Place")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_missingId_space_lookup_review(self):
+        message = "** instance id missing **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Review")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_basemodel(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy BaseModel 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_user(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy User 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_state(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy State 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_city(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy City 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_amenity(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Amenity 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_place(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Place 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_space_lookup_review(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("destroy Review 88")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_basemodel(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("BaseModel.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_user(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("User.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_state(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("State.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_city(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("City.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_amenity(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Amenity.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_place(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Place.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_invalidId_dot_lookup_review(self):
+        message = "** no instance found **"
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("Review.destroy(88)")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual(message, output)
+
+    def test_destroy_with_valid_id_space_lookup_basemodel(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["BaseModel.{}".format(obj_id)]
+            cmd_h = "destroy BaseModel {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_user(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create User"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["User.{}".format(obj_id)]
+            cmd_h = "destroy User {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_state(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create State"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["State.{}".format(obj_id)]
+            cmd_h = "destroy State {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_city(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create City"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["City.{}".format(obj_id)]
+            cmd_h = "destroy City {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_amenity(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Amenity.{}".format(obj_id)]
+            cmd_h = "destroy Amenity {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_place(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Place"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Place.{}".format(obj_id)]
+            cmd_h = "destroy Place {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_space_lookup_review(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Review"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Review.{}".format(obj_id)]
+            cmd_h = "destroy Review {}".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_basemodel(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Review"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Review.{}".format(obj_id)]
+            cmd_h = "BaseModel.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_user(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create User"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["User.{}".format(obj_id)]
+            cmd_h = "User.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_state(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create State"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["State.{}".format(obj_id)]
+            cmd_h = "State.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_city(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create City"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["City.{}".format(obj_id)]
+            cmd_h = "City.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_amenity(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Amenity.{}".format(obj_id)]
+            cmd_h = "Amenity.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_place(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Place"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Place.{}".format(obj_id)]
+            cmd_h = "Place.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+    def test_destroy_with_valid_id_dot_lookup_review(self):
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Review"))
+            obj_id = f.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()) as f:
+            objec = models.storage.all()["Review.{}".format(obj_id)]
+            cmd_h = "Review.destroy({})".format(obj_id)
+            self.assertFalse(HBNBCommand().onecmd(cmd_h))
+            self.assertNotIn(objec, models.storage.all())
+
+class TestAllCommand(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.console = HBNBCommand()
+
+    def test_all_no_class(self):
+        message = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("all InValid"))
+            self.assertEqual(message, f.getvalue().strip())
+
+    def test_all_no_class_dot_lookup(self):
+        message = "** class doesn't exist **"
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("BadClass.all()"))
+            self.assertEqual(message, f.getvalue().strip())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
