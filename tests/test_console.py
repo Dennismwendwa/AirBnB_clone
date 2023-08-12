@@ -4,6 +4,13 @@ This are the test for console module
 
 """
 from console import HBNBCommand
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 import unittest
 import sys
@@ -65,6 +72,15 @@ class TestHelpForAllMethods(unittest.TestCase):
             output = self.mock_stdout.getvalue().strip()
             self.assertIn("Quit command to exit the program", output)
     
+    def test_help(self):
+        message = ("Documented commands (type help <topic>):\n"
+                   "========================================\n"
+                   "EOF  all  create  destroy  help  quit  show  update"
+                )
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("help"))
+            self.assertEqual(message, f.getvalue().strip())
+    
     def test_help_EOF(self):
         message = "Exits the program without crashing"
         with patch("sys.stdout", new=StringIO()) as output:
@@ -113,3 +129,149 @@ class TestHelpForAllMethods(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as f:
             self.assertFalse(HBNBCommand().onecmd("help update"))
             self.assertIn(message, f.getvalue().strip())
+
+
+
+class TestCreateCommand(unittest.TestCase):
+    """This class is testing the create command"""
+
+    def setUp(self):
+        self.console = HBNBCommand()
+        self.mock_stdout = StringIO()
+
+    def tearDown(self):
+        self.mock_stdout.close()
+
+    def test_create_valid_basemodel(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create BaseModel")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+    
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show BaseModel {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_valid_User(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create User")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show User {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_valid_State(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create State")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show State {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+
+    def test_create_valid_City(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create City")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show City {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_valid_Amenity(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create Amenity")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show Amenity {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_valid_Place(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create Place")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show Place {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_valid_Review(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create Review")
+            output = self.mock_stdout.getvalue().strip()
+            object_id = output
+            self.assertTrue(len(output) == 36)
+
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("show Review {}".format(object_id))
+            output = self.mock_stdout.getvalue().strip()
+            self.assertIn("'id': '{}'".format(object_id), output)
+            self.assertIn("'created_at':", output)
+            self.assertIn("'updated_at':", output)
+
+    def test_create_invalid_class(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create InvalidCalssTony")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual("** class doesn't exist **", output)
+
+    def test_create_missing_class(self):
+        with patch("sys.stdout", new=self.mock_stdout):
+            self.console.onecmd("create")
+            output = self.mock_stdout.getvalue().strip()
+            self.assertEqual("** class name missing **", output)
+
+    def test_create_unkwow_stntax(self):
+        message ="*** Unknown syntax: tony"
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("tony"))
+            self.assertEqual(message, f.getvalue().strip())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
