@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-This are the test for console module
-
-"""
+"""This are the test for console module"""
 from console import HBNBCommand
 from models.base_model import BaseModel
 from models.user import User

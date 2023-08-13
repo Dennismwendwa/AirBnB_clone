@@ -12,12 +12,7 @@ import models
 class BaseModel:
     """This are the attributes and methods of this class"""
     def __init__(self, *args, **kwargs):
-        """THis is the contractor method of the base class.
-        Attributes:
-            id: tracts the uniques id of the objects
-            created_at: stores the date the objected was created
-            updated_at: stores the date of the most recent update
-        """
+        """THis is the contractor method of the base class."""
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
