@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        Creates a new instance of BaseModel, saves it (to the JSON file)
+        Creates instance of BaseModel, saves it (to the JSON file)
         """
         if not arg:
             print("** class name missing **")
@@ -80,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """
-        Deletes an instance based on the class name and id
+        Deletes an instance based the class name and id
         Usage: destroy <class name> <instance id>
         """
 
@@ -107,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, arg):
         """
-        Prints all string representation of all instances based or
+        Prints string representation instances based or
         not on the class name.
         Args:
             arg (str): Class name
@@ -126,12 +126,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_update(self, arg):
-        """
-        Updates an instance based on the class name and id by adding or
-        updating attribute
-        Usage: update <class name> <instance id> <attribute name>
-        "<attribute value>"
-        """
+        """Updates instance based the class name adding or"""
 
         if not arg:
             print("** class name missing **")
@@ -143,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         if len(args) < 2:
-            print("** instance id missing *")
+            print("** instance id missing **")
             return
 
         objects = models.storage.all()
