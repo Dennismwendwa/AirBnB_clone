@@ -131,7 +131,7 @@ class TestCity_save(unittest.TestCase):
     def test_save_with_arg(self):
         cy = City()
         with self.assertRaises(TypeError):
-            cy.save(None)
+            cy.save()
 
     def test_save_updates_file(self):
         cy = City()
@@ -188,7 +188,7 @@ class TestCity_to_dict(unittest.TestCase):
     def test_to_dict_with_arg(self):
         cy = City()
         with self.assertRaises(TypeError):
-            cy.to_dict(None)
+            cy.to_dict()
 
 
 if __name__ == "__main__":

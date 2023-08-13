@@ -126,7 +126,7 @@ class TestAmenity_save(unittest.TestCase):
     def test_save_with_arg(self):
         am = Amenity()
         with self.assertRaises(TypeError):
-            am.save(None)
+            am.save()
 
     def test_save_updates_file(self):
         am = Amenity()
@@ -183,7 +183,7 @@ class TestAmenity_to_dict(unittest.TestCase):
     def test_to_dict_with_arg(self):
         am = Amenity()
         with self.assertRaises(TypeError):
-            am.to_dict(None)
+            am.to_dict()
 
 
 if __name__ == "__main__":
