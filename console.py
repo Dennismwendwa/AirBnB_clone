@@ -22,10 +22,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_EOF(self, arg):
-        """
-        This method gets called at the EOF
-        to exit
-        """
+        """Exits the program without crashing"""
         print()
         return True
 
@@ -40,8 +37,6 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel, saves it (to the JSON file)
-        and prints the id
-        Usage: create <class name>
         """
         if not arg:
             print("** class name missing **")
