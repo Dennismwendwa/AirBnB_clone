@@ -42,3 +42,24 @@ Documented commands (type help <topic>):
 EOF  help  quit
 (hbnb)
 $
+
+Examples of using the console in non-interactive mode:
+
+{
+$ echo "help" | ./console.py
+(hbnb) 
+Documented commands (type help <topic>):
+========================================
+EOF  all  create  destroy  help  quit  show  update
+
+(hbnb) 
+
+$ echo show | ./console.py
+(hbnb) ** class name missing **
+(hbnb) 
+
+$ echo all | ./console.py
+(hbnb) ** class name missing **
+(hbnb)
+$
+}
