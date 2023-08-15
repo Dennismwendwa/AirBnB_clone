@@ -23,7 +23,7 @@ class TestFilesStorage(unittest.TestCase):
         self._class = FileStorage
         self._name = "FileStorage"
         base = self._class()
-        self.assertTrue(os.path.exists("file.json"))
+        self.assertFalse(os.path.exists("file.json"))
         self.assertIsInstance(base.all(), dict)
 
     def test_new(self):
