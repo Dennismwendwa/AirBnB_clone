@@ -25,7 +25,7 @@ class TestFilesStorage(unittest.TestCase):
         base = self._class()
         self.assertTrue(os.path.exists("file.json"))
         self.assertIsInstance(base.all(), dict)
-    
+
     def test_new(self):
         Base = BaseModel()
         Usr = User()
@@ -34,7 +34,7 @@ class TestFilesStorage(unittest.TestCase):
         Ciy = City()
         Amen = Amenity()
         Revi = Review()
-        
+
         models.storage.new(Base)
         models.storage.new(Usr)
         models.storage.new(Sta)
@@ -63,7 +63,7 @@ class TestFilesStorage(unittest.TestCase):
 
         self.assertIn("Review." + Revi.id, models.storage.all().keys())
         self.assertIn(Revi, models.storage.all().values())
-    
+
     def test_save(self):
         Base = BaseModel()
         Usr = User()
@@ -91,7 +91,7 @@ class TestFilesStorage(unittest.TestCase):
             self.assertIn("City." + Ciy.id, save_massage)
             self.assertIn("Amenity." + Amen.id, save_massage)
             self.assertIn("Review." + Revi.id, save_massage)
-    
+
     def test_reload(self):
         Base = BaseModel()
         Usr = User()
@@ -118,7 +118,7 @@ class TestFilesStorage(unittest.TestCase):
         self.assertIn("City." + Ciy.id, objectss)
         self.assertIn("Amenity." + Amen.id, objectss)
         self.assertIn("Review." + Revi.id, objectss)
-    
+
     def test_new_using_kwargs(self):
         with self.assertRaises(TypeError):
             models.storage.new(User(), 1)
